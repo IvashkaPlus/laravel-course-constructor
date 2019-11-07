@@ -147,8 +147,8 @@ $(document).ready(function () {
     });
 
     $(".create-lesson-item-quiz").click(function(){
-        let quizTitle = $("#add-lesson-form input[name=quizTitle]").val();
-        let quizText = $("#add-lesson-form textarea[name=html-quiz]").val();
+        let quizTitle = $("#addQuiz #quizTitleInput").val();
+        let quizText = $("#addQuiz #quizTextInput").val();
         if (quizTitle.length === 0
             || quizText.length === 0){
             $('.form-creation-warning.checker').show();
@@ -195,6 +195,10 @@ $(document).ready(function () {
                         $('#updateLecture').modal('toggle');
                         break;
                     case "Видео":
+                        $('#updateVideo #videoTitleInput').val(item.title);
+                        $('#updateVideo #videoTextInput').val(item.html);
+                        $('#updateVideo #videoUrlInput').val(item.url);
+                        $('#updateVideo').modal('toggle');
                         break;
                     case "Тестирование":
                         let url = "http://localhost/laravel/public/constructor/quiz/id_" + tempItem;
@@ -235,6 +239,40 @@ $(document).ready(function () {
             });
         }
     });
+
+    $(".update-lesson-item-video").click(function(){
+        let videoTitle = $("#updateVideo #videoTitleInput").val();
+        let videoText = $("#updateVideo #videoTextInput").val();
+        let videoUrl = $('#updateVideo #videoUrlInput').val();
+        let type = "Видео";
+        if (videoTitle.length === 0
+            || videoText.length === 0
+            || videoUrl.length === 0){
+            $('.form-creation-warning.checker').show();
+        } else {
+            $('.form-creation-warning.checker').hide();
+            let lesson = $(".lesson.selected").data('lesson');
+            let token = $('meta[name=csrf-token]').attr("content");
+            let dataObj = {
+                _token: token,
+                lessonItemTitle: videoTitle,
+                html: videoText,
+                lessonId: lesson,
+                lessonItemType: type,
+                courseId: courseID,
+                lessonItemId: tempItem,
+                url: videoUrl,
+            };
+            tempItem = '';
+            $.ajax({
+                url: "http://localhost/laravel/public/constructor/update-lesson-item",
+                method: "POST",
+                data: dataObj,
+                success: location.reload()
+            });
+        }
+    });
+
 
     $(".delete-lesson-item-submit").click(function(){
         let token = $('meta[name=csrf-token]').attr("content");
