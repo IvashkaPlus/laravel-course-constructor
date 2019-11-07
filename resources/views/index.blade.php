@@ -78,11 +78,11 @@
                         </div>
                         <div class="form-group">
                             <label for="courseSmallDescriptionInput">Описание курса</label>
-                            <textarea rows="10" class="form-control" name="full_desc" id="courseSmallDescriptionInput" placeholder="Опишите как можно подробннее ваш курс. Программа обучения, для кого этот курс, какие знания и навыки приобретёт ученик"></textarea>
+                            <textarea rows="10" class="form-control" name="full_desc" id="courseFullDescriptionInput" placeholder="Опишите как можно подробннее ваш курс. Программа обучения, для кого этот курс, какие знания и навыки приобретёт ученик"></textarea>
                             <small class = "form-hint">Описание не должно быть пустым</small>
                         </div>
 
-                            <input type="file" name="picture" id="courseAvatarUpload">
+                            <input type="file" name="picture" id="courseAvatarUpload" disabled>
 
                         <small class="form-course-creation-warning checker">Пожалуйста, заполните все поля корректно!</small>
                     </form>

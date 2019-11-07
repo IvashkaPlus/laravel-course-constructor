@@ -16,28 +16,49 @@ p,h1,h2{color: #595a5b}
 }
 
 .lesson,
+.question,
+.answer,
 .lesson-item,
 .add-lesson-button,
-.add-lesson-item-button{border-bottom: #95999c 1px solid}
+.add-lesson-item-button,
+.add-question-button,
+.add-answer-button{border-bottom: #95999c 1px solid}
 
 .lesson,
+.question,
+.answer,
 .add-lesson-button,
-.add-lesson-item-button{padding: 1em}
+.add-lesson-item-button,
+.add-question-button,
+.add-answer-button{padding: 1em}
 
+.quiz-info-container,
 .lesson-item-info{
     padding: 1em;
 }
 
 .add-lesson-button:hover,
 .add-lesson-item-button:hover,
-.lesson:hover{
+.add-question-button:hover,
+.add-answer-button:hover,
+.lesson:hover,
+.question:hover{
     cursor: pointer;
     background-color: #ceece7
 }
 
 .lesson-item{height: 10em}
 
+.question.selected,
 .lesson.selected{background-color: #9fe7da;}
+
+.question-info-container{
+    min-height: 180px;
+    padding: 1em;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
+    background: #fff;
+    margin-bottom: 1em;
+}
 
 .add-lesson-item{
     text-align: center;
@@ -69,10 +90,15 @@ p,h1,h2{color: #595a5b}
 /* Buttons */
 
 .add-lesson-button,
-.add-lesson-item-button{text-align: center}
+.add-lesson-item-button,
+.add-question-button,
+.add-answer-button{text-align: center}
 
-.add-lesson-item-button{vertical-align: middle;}
+.add-lesson-item-button,
+.add-answer-button{vertical-align: middle;}
 
+.add-question-button span::before,
+.add-answer-button span::before,
 .add-lesson-button span::before,
 .add-lesson-item-button span::before{
     content: url(../img/plus-15-15m.png);
@@ -80,14 +106,17 @@ p,h1,h2{color: #595a5b}
     padding-right: 5px;
 }
 
-.delete-lesson-button{
+.delete-lesson-button,
+.delete-question-button{
     background-color: #e43552;
     color: white;
     padding: 0.5em;
     text-align: center;
 }
 
-.delete-lesson-button:hover{
+
+.delete-lesson-button:hover,
+.delete-question-button:hover{
     background-color: #d07080;
     cursor: pointer;
 }
@@ -112,7 +141,10 @@ p,h1,h2{color: #595a5b}
     cursor: pointer;
 }
 
-
+.constructor-button .disabled{
+    background-color: #ceece7;
+    cursor: default;
+}
 
 /* Text styles */
 

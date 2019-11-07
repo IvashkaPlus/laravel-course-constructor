@@ -1,0 +1,27 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="13">
+            <item index="0" class="java.lang.String" itemvalue="data-answer" />
+            <item index="1" class="java.lang.String" itemvalue="data-question" />
+            <item index="2" class="java.lang.String" itemvalue="data-toggle" />
+            <item index="3" class="java.lang.String" itemvalue="data-target" />
+            <item index="4" class="java.lang.String" itemvalue="charset" />
+            <item index="5" class="java.lang.String" itemvalue="data-quiz" />
+            <item index="6" class="java.lang.String" itemvalue="data-hint" />
+            <item index="7" class="java.lang.String" itemvalue="data-item" />
+            <item index="8" class="java.lang.String" itemvalue="data-lesson" />
+            <item index="9" class="java.lang.String" itemvalue="data-course" />
+            <item index="10" class="java.lang.String" itemvalue="role" />
+            <item index="11" class="java.lang.String" itemvalue="data-dismiss" />
+            <item index="12" class="java.lang.String" itemvalue="placeholder" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+  </profile>
+</component>

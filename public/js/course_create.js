@@ -15,7 +15,6 @@ $(document).ready(function () {
             $(".form-symbol-counter").addClass('warning');
         else
             $(".form-symbol-counter").removeClass('warning');
-
     });
 
     $('.submit-add-course').click(function () {

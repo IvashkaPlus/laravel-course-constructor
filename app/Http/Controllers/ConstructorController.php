@@ -25,7 +25,7 @@ class ConstructorController extends Controller
         return view('constructor', ['course'=>$course, 'lesson_items'=>$items_array]);
     }
 
-    //CUD Courses
+    //CRUD Courses
 
     public function createCourse(){
         $new_course_data = request()->all();
@@ -51,22 +51,30 @@ class ConstructorController extends Controller
     }
     public function updateCourse(){
         $request = request()->all();
-        $course = Course::where('id', $request['courseId']);
-        $this->constructor($request['courseId']);
+        $course = Course::where('id', $request['courseId'])->first();
+        $course->title = $request['courseTitle'];
+        $course->description = $request['courseLowDesc'];
+        $course->full_description = $request['courseFullDesc'];
+        $course->save();
     }
     public function deleteCourse(){
         $request = request()->all();
-        $lessons = CourseLesson::where('course_id', $request->courseId);
+        $lessons = CourseLesson::where('course_id', $request['courseId'])->get();
         foreach ($lessons as $lesson){
             $lessonItems = LessonItems::where('lesson_id', $lesson->id);
             $lessonItems->delete();
         }
-        $lessons->delete();
-        Course::delete()->where('id', $request['courseId']);
+        CourseLesson::where('course_id', $request['courseId'])->delete();
+        Course::where('id', $request['courseId'])->delete();
         return redirect('/');
     }
+    public function getCourse(){
+        $request = request()->all();
+        $course = Course::where('id', $request["courseId"])->first();
+        return $course;
+    }
 
-    //CUD Lessons
+    //CRUD Lessons
 
     public function createLesson(){
         $request = request()->all();
@@ -109,8 +117,10 @@ class ConstructorController extends Controller
                 $lessonItem->url = $request['url'];
                 break;
             case "Тестирование":
-                $lessonItem->questions = $request['questions'];
-                break;
+                $lessonItem->questions = [];
+                $lessonItem->course_id = (int)$request['courseId'];
+                $lessonItem->save();
+                return $lessonItem->_id;
         }
         $lessonItem->save();
     }
@@ -148,5 +158,60 @@ class ConstructorController extends Controller
         }
     }
 
+    //Quiz Constructor
+
+    public function quizConstructor($quiz_id){
+        $quiz = LessonItems::where('_id', $quiz_id)->first();
+        return view('quiz-constructor', ['quiz'=>$quiz]);
+    }
+    public function saveQuiz(){
+
+    }
+
+    //CRUD Questions
+
+    public function createQuestion(){
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $tempQuest = array(
+           "title" => $request['lessonTitle'],
+           "answers" => []
+        );
+        $temp_questions = $current_quiz->questions;
+        if(empty($temp_questions)){
+            $temp_questions[0] = (object) $tempQuest;
+            $current_quiz->questions = $temp_questions;
+        }
+        else {
+            $question_count = count($temp_questions);
+            $temp_questions[$question_count] = (object)$tempQuest;
+        }
+        $current_quiz->questions = $temp_questions;
+        $current_quiz->save();
+        return count($current_quiz->questions);
+    }
+    public function updateQuestion(){
+
+    }
+    public function deleteQuestion(){
+
+    }
+    public function getQuestion(){
+
+    }
+
+    //CRUD Answers
+    public function createAnswer(){
+
+    }
+    public function updateAnswer(){
+
+    }
+    public function deleteAnswer(){
+
+    }
+    public function getAnswer(){
+
+    }
 }
 

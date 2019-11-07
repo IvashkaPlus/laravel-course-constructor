@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="ru">
 <head>
     <meta content="utf-8" charset="utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,6 +17,9 @@
     <title>[TEST]Конструктор курсов</title>
 </head>
 <body>
+<div class="container-fluid" >
+    <h1>Редактор курса</h1>
+</div>
 <div class="course-info container-fluid" style='margin-bottom: 1.5em'>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12 ">
@@ -35,7 +38,7 @@
                         <div class="button-container-vertical">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-xs-4" align="center">
-                                    <div class="teacher-list-button constructor-button" data-toggle="modal"
+                                    <div class="teacher-list-button constructor-button disabled" data-toggle="modal"
                                          data-hint="true" title="Преподаватели курса" data-target="#teacherList">
                                         <div class="icon-place">
                                             <span class="glyphicon glyphicon-education"></span>
@@ -43,8 +46,8 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-xs-4" align="center">
-                                    <div class="edit-course-button constructor-button" data-toggle="modal"
-                                         data-hint="true" title="Информация о курсе" data-target="#editCourseInfo">
+                                    <div class="update-course-button constructor-button" data-toggle="modal"
+                                         data-hint="true" title="Информация о курсе" data-target="#updateCourse">
                                         <div class="icon-place">
                                             <span class="glyphicon glyphicon-menu-hamburger"></span>
                                         </div>
@@ -125,7 +128,9 @@
                         @endforeach
                      @endforeach
                 </div>
-                <div class="add-lesson-item-button" data-toggle="modal" data-target="#addLessonItem"><span>Добавить материал</span></div>
+                <div class="add-lesson-item-button" data-toggle="modal" data-target="#addLessonItem" style="display: none">
+                    <span>Добавить материал</span>
+                </div>
             </div>
         </div>
     </div>
@@ -182,7 +187,7 @@
                             </div>
                         </div>
                         <div class="col-xl-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="constructor-button create-lesson-item-testing add-lesson-item">
+                            <div class="constructor-button modal-lesson-item-quiz add-lesson-item">
                                 <div class="row">
                                         <div class="col-12">
                                             <div class="icon-place large">
@@ -220,7 +225,11 @@
 <div class="modal fade" id="deleteCourse" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <form action="{{asset('constructor/delete-course')}}"  id="deleteCourseForm" method="post">
+                <input type="hidden" name="_token" value="">
+                <input name="courseId" value="{{$course->id}}" style="display: none">
             <div class="modal-header">
+
                 <h5 class="modal-title" align="center">Вы действительно хотите удалить данный курс?</h5>
             </div>
             <div class="modal-body">
@@ -228,8 +237,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary">Да</button>
+                <button type="submit" class="btn btn-primary delete-course-submit">Да</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -309,10 +319,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" align="center">Новая лекция</h5>
+                <h5 class="modal-title" align="center">Новое видео</h5>
             </div>
             <div class="modal-body">
-                <form id="videoCreateForm">
+                <form id="add-video-form">
                     <div class="form-group">
                         <label for="videoTitleInput">Название</label>
                         <input class="form-control" name="videoTitle" id="videoTitleInput" placeholder="">
@@ -336,6 +346,65 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="addQuiz" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" align="center">Новое тестирование</h5>
+            </div>
+            <div class="modal-body">
+                <form id="videoCreateForm">
+                    <div class="form-group">
+                        <label for="quizTitleInput">Название</label>
+                        <input class="form-control" name="quizTitle" id="quizTitleInput" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="quizTextInput">Описание тестирования</label>
+                        <textarea rows="5" class="form-control" name="html-quiz" id="quizTextInput"
+                                  placeholder=""></textarea>
+                    </div>
+                    <small class="form-creation-warning checker">Пожалуйста, заполните все поля корректно!</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary create-lesson-item-quiz">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal bd-example-modal-lg fade" id="updateCourse" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" align="center">Изменение информации курса</h5>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="courseNameInput">Название курса</label>
+                        <input class="form-control" name="name" id="courseNameInput" placeholder="Название курса">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseSmallDescriptionInput">Краткое описание курса</label>
+                        <textarea class="form-control" name="low_desc" id="courseSmallDescriptionInput" placeholder="Кратко опишите, о чем ваш курс"></textarea>
+                        <small class="form-symbol-counter"><span>0</span>/150</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseSmallDescriptionInput">Описание курса</label>
+                        <textarea rows="10" class="form-control" name="full_desc" id="courseFullDescriptionInput" placeholder="Опишите как можно подробннее ваш курс. Программа обучения, для кого этот курс, какие знания и навыки приобретёт ученик"></textarea>
+                    </div>
+
+                    <input type="file" name="picture" id="courseAvatarUpload" disabled>
+
+                    <small class="form-creation-warning checker">Пожалуйста, заполните все поля корректно!</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary update-course-submit">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
