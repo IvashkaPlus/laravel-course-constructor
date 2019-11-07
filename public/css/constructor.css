@@ -15,6 +15,10 @@ p,h1,h2{color: #595a5b}
     padding: 1em;
 }
 
+.course-info-detailed{
+    margin-bottom: 1em;;
+}
+
 .lesson,
 .question,
 .answer,
@@ -32,9 +36,21 @@ p,h1,h2{color: #595a5b}
 .add-question-button,
 .add-answer-button{padding: 1em}
 
+.course-features,
+.teacher-list,
 .quiz-info-container,
 .lesson-item-info{
     padding: 1em;
+}
+
+.teacher-container{
+    margin: 1.481em;
+}
+
+.teacher-block{
+    padding: 0.5em;
+    border:  #75d7c3 2px solid;
+    border-radius: 10px;
 }
 
 .add-lesson-button:hover,
@@ -86,6 +102,8 @@ p,h1,h2{color: #595a5b}
     padding-top: 0.4em;
     font-size: 3.5em;
 }
+
+
 
 /* Buttons */
 

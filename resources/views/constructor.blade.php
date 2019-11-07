@@ -34,7 +34,6 @@
                         <div class="course-name" style="margin-top: 1.5em"><h1>{{$course->title}}</h1></div>
                         <div class="course-description">
                             <p>{{$course->description}}</p>
-                            <p>Автор курса:<br>Количество уроков: {{count($course->lessons)}}</p>
                         </div>
                     </div>
                     <div class="col-xl-1 col-md-2 col-sm-3 col-xs-6">
@@ -72,6 +71,44 @@
         </div>
     </div>
 </div>
+<div class="course-info-detailed container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-xs-6">
+            <div class="constructor-section course-features">
+                <p>Автор курса: Иван Иванов</p>
+                <p>Количество уроков: {{count($course->lessons)}}</p>
+                <p>Цена курса: 1000 р.</p>
+            </div>
+        </div>
+        <div class="col-md-8 col-xs-6">
+            <div class="constructor-section teacher-list">
+                <h4>Преподаватели курса</h4>
+                <div class="teacher-container">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="teacher-block">
+                                <span>Иван Иванов</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="teacher-block">
+                                <span>Петр Петров</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="teacher-block">
+                                <span>Витя Витров</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <div class="course-details container-fluid" style='margin-bottom: 1.5em'>
     <div class="row">
         <div class="col-md-4 col-xs-6">
