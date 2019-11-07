@@ -34,6 +34,4 @@ Route::group(['prefix' => 'constructor'], function (){
     Route::post('/update-answer', 'ConstructorController@updateAnswer');
     Route::post('/delete-answer', 'ConstructorController@deleteAnswer');
     Route::post('/get-answer',    'ConstructorController@getAnswer');
-
-
 });

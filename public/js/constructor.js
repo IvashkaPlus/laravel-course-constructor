@@ -25,7 +25,6 @@ $(document).ready(function () {
         for(let i = 0; i < lesson_items.length; i++){
             if ($('.lesson-item').eq(i).data('lesson') == lesson_id){
                 $('.lesson-item').eq(i).show();
-                break;
             }
         }
     });

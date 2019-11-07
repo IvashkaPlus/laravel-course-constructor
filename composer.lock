@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76972e188622d6ae42010c7b7f1c1fe3",
+    "content-hash": "7ded22a0e4baa60f60e00ada433b810b",
     "packages": [
         {
             "name": "cartalyst/sentry",
@@ -5968,7 +5968,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1.3"
+        "php": "^7.1.3",
+        "ext-json": "^1.5"
     },
     "platform-dev": []
 }

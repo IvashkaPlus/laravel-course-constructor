@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
+        "ext-json": "^1.5",
         "fideloper/proxy": "^4.0",
         "jenssegers/mongodb": "^3.6",
         "jenssegers/mongodb-sentry": "^1.0",

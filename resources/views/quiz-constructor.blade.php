@@ -36,8 +36,8 @@
                         <div class="button-container-vertical">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-xs-4" align="center">
-                                    <div class="update-quiz-info-button constructor-button" data-toggle="modal"
-                                         data-hint="true" title="Информация о тестировании" data-target="#updateQuizInfo">
+                                    <div class="update-quiz-info-button constructor-button"
+                                         data-hint="true" title="Информация о тестировании">
                                         <div class="icon-place">
                                             <span class="glyphicon glyphicon-menu-hamburger"></span>
                                         </div>
@@ -77,6 +77,7 @@
                         <div class="row">
                             <div class="col-xl-11 col-md-10 col-sm-10 col-xs-8">
                                 <h4>Вопрос: {{$quest['title']}}</h4>
+                                <p>Количество ответов:  {{count($quest['answers'])}}</p>
                             </div>
                             <div class="col-xl-1 col-md-2 col-sm-2 col-xs-4">
                                 <div class="button-container-vertical">
@@ -123,7 +124,7 @@
                                             <div class="row">
                                                 <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12" align="center">
                                                     <div class="update-answer-button constructor-button" title="Редактировать"
-                                                         data-hint="true" data-item="" data-target="#updateAnswer">
+                                                         data-hint="true" data-item="{{$key}}" data-target="#updateAnswer">
                                                         <div class="icon-place">
                                                             <span class="glyphicon glyphicon-edit"></span>
                                                         </div>
@@ -131,7 +132,7 @@
                                                 </div>
                                                 <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12" align="center">
                                                     <div class="delete-answer-button constructor-button" data-toggle="modal"
-                                                         title="Удалить" data-hint="true" data-target="#deleteAnswer" data-item="">
+                                                         title="Удалить" data-hint="true" data-target="#deleteAnswer" data-item="{{$key}}">
                                                         <div class="icon-place">
                                                             <span class="glyphicon glyphicon-trash"></span>
                                                         </div>
@@ -178,7 +179,7 @@
         <div class="modal-content">
             <form id="add-question-form">
                 <div class="modal-header">
-                    <h5 class="modal-title" align="center">Изменение</h5>
+                    <h5 class="modal-title" align="center">Изменение вопроса</h5>
                 </div>
                 <div class="modal-body">
                     <input class="form-control" id="questionTitleInput" name="question-title" placeholder="Вопрос">
@@ -187,7 +188,7 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary update-question-submit">Создать</button>
+                <button type="button" class="btn btn-primary update-question-submit">Изменить</button>
             </div>
         </div>
     </div>
@@ -213,11 +214,15 @@
                     <h5 class="modal-title" align="center">Введите новый ответ</h5>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" name="answer-title" placeholder="Ответ">
-                    <input class="form-check-input" type="checkbox" value="" id="answerCorrectnessCheck">
-                    <label class="form-check-label" for="answerCorrectnessCheck">
-                        Корректность ответа
-                    </label>
+                    <div class="form-group">
+                        <input class="form-control" name="answer-title" placeholder="Ответ">
+                    </div>
+                    <div class="form-check form-group">
+                        <input class="form-check-input" type="checkbox" value="" id="answerCorrectnessCheck">
+                        <label class="form-check-label" for="answerCorrectnessCheck">
+                            Корректность ответа
+                        </label>
+                    </div>
                     <small class="form-creation-warning checker">Пожалуйста, введите ответ!</small>
                 </div>
             </form>
@@ -236,17 +241,21 @@
                     <h5 class="modal-title" align="center">Изменение ответа</h5>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" name="answer-title" placeholder="Ответ">
-                    <input class="form-check-input" type="checkbox" value="" id="answerCorrectnessCheck">
-                    <label class="form-check-label" for="answerCorrectnessCheck">
-                        Корректность ответа
-                    </label>
+                    <div class="form-group">
+                        <input class="form-control" name="answer-title" placeholder="Ответ">
+                    </div>
+                    <div class="form-check form-group">
+                        <input class="form-check-input" type="checkbox" value="" id="answerCorrectnessCheck">
+                        <label class="form-check-label" for="answerCorrectnessCheck">
+                            Корректность ответа
+                        </label>
+                    </div>
                     <small class="form-creation-warning checker">Пожалуйста, введите ответ!</small>
                 </div>
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary update-answer-submit">Создать</button>
+                <button type="button" class="btn btn-primary update-answer-submit">Изменить</button>
             </div>
         </div>
     </div>
@@ -260,6 +269,33 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                 <button type="button" class="btn btn-primary delete-answer-submit">Да</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="updateQuizInfo" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" align="center">Изменение информации о тестировнии</h5>
+            </div>
+            <div class="modal-body">
+                <form id="updateQuizForm">
+                    <div class="form-group">
+                        <label for="quizTitleInput">Название</label>
+                        <input class="form-control" name="quizTitle" id="quizTitleInput" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="quizTextInput">Описание тестирования</label>
+                        <textarea rows="5" class="form-control" name="html-quiz" id="quizTextInput"
+                                  placeholder=""></textarea>
+                    </div>
+                    <small class="form-creation-warning checker">Пожалуйста, заполните все поля корректно!</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary update-quiz-info-submit">Добавить</button>
             </div>
         </div>
     </div>

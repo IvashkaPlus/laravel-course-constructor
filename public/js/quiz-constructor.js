@@ -6,6 +6,56 @@ $(document).ready(function () {
     let courseID = $(".quiz-info-container").data('course');
     let currentAnswerUpdating = '';
 
+    // Quiz
+
+    $(".save-quiz-button").click(function () {
+        let url = "http://localhost/laravel/public/constructor/course/id" + courseID;
+        location.assign(url);
+    });
+
+    $(".update-quiz-info-button").click(function () {
+        let dataObj = {
+            lessonItemId: quizID,
+            _token: $('meta[name=csrf-token]').attr("content")
+        };
+        $.ajax({
+            url:'http://localhost/laravel/public/constructor/get-lesson-item',
+            method: 'POST',
+            data: dataObj,
+            success: function (data) {
+                $('#updateQuizInfo #quizTitleInput').val(data.title);
+                $('#updateQuizInfo #quizTextInput').val(data.html);
+                $('#updateQuizInfo').modal('toggle');
+            }
+        })
+    });
+
+    $(".update-quiz-info-submit").click(function () {
+        let quizTitle = $('#updateQuizInfo #quizTitleInput').val();
+        let quizText = $('#updateQuizInfo #quizTextInput').val();
+        if (quizTitle.length === 0
+            || quizText.length === 0){
+            $('.form-creation-warning.checker').show();
+        } else {
+            $('.form-creation-warning.checker').hide();
+            let dataObj = {
+                _token: $('meta[name=csrf-token]').attr("content"),
+                lessonItemTitle: quizTitle,
+                html: quizText,
+                courseId: courseID,
+                lessonItemId: quizID
+            };
+            $.ajax({
+                url: "http://localhost/laravel/public/constructor/update-lesson-item",
+                method: "POST",
+                data: dataObj,
+                success: location.reload()
+            });
+        }
+    });
+
+    // Questions
+
     $(".question").click(function (){
         if($(this).hasClass('selected')){return}
 
@@ -20,13 +70,9 @@ $(document).ready(function () {
         for(let i = 0; i < question_blocks.length; i++){
             if ($('.question-block').eq(i).data('question') == quest_id){
                 $('.question-block').eq(i).show();
-                break;
             }
         }
-
     });
-
-    // Questions
 
     $(".add-question-submit").click(function(){
         let title = $("#addQuestion input[name=question-title]").val();
@@ -98,7 +144,8 @@ $(document).ready(function () {
         let dataObj = {
             _token: token,
             courseId: courseID,
-            questionId: question
+            questionId: question,
+            quizId: quizID,
         };
         $.ajax({
             url: "http://localhost/laravel/public/constructor/delete-question",
@@ -110,10 +157,10 @@ $(document).ready(function () {
 
     // Answers
 
-    $(".add-answer-button").click(function(){
+    $(".add-answer-submit").click(function(){
         let title = $("#addAnswer input[name=answer-title]").val();
         let quest_id = $('.question.selected').data('question');
-        let correctnessInfo = $('#addAnswer #answerCorrectnessCheck').val();
+        let correctnessInfo = $('#addAnswer #answerCorrectnessCheck').prop('checked');
         if (title.length === 0) {
             $('.form-creation-warning.checker').show();
         }
@@ -145,26 +192,27 @@ $(document).ready(function () {
             answerId: $(this).data("item")
         };
         $.ajax({
-            url: "http://localhost/laravel/public/constructor/get-question",
+            url: "http://localhost/laravel/public/constructor/get-answer",
             method: "POST",
             data: dataObj,
             success: function (item) {
-                $('#updateAnswer input[name=answer-title]').val(item);
-                $('#updateAnswer #answerCorrectnessCheck').val();
-                currentAnswerUpdating = $(this).data("item");
+                $('#updateAnswer input[name=answer-title]').val(item.title);
+                $('#updateAnswer #answerCorrectnessCheck').prop( "checked", item.correctness);
+                currentAnswerUpdating = dataObj.answerId;
                 $('#updateAnswer').modal('toggle');
             }
         });
     });
 
     $(".update-answer-submit").click(function(){
-        let title = $("#addAnswer input[name=answer-title]").val();
+        let title = $("#updateAnswer input[name=answer-title]").val();
         let quest_id = $('.question.selected').data('question');
-        let correctnessInfo = $('#addAnswer #answerCorrectnessCheck').val();
+        let correctnessInfo = $('#updateAnswer #answerCorrectnessCheck').prop('checked');
         if (title.length === 0) {
             $('.form-creation-warning.checker').show();
         }
         else {
+            console.log(currentAnswerUpdating);
             $('.form-creation-warning.checker').hide();
             let token = $('meta[name=csrf-token]').attr("content");
             let dataObj = {
@@ -206,11 +254,9 @@ $(document).ready(function () {
         currentAnswerUpdating = ($(this).data("item"));
     });
 
+    // Modal
 
-    $(".save-quiz-button").click(function () {
-       let url = "http://localhost/laravel/public/constructor/course/id" + courseID;
-        location.assign(url);
-    });
+    $('.form-creation-warning.checker').hide();
 
     $('.modal').on('hidden.bs.modal', function (e) {
         $('.form-creation-warning.checker').hide();

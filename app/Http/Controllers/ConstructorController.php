@@ -25,7 +25,7 @@ class ConstructorController extends Controller
         return view('constructor', ['course'=>$course, 'lesson_items'=>$items_array]);
     }
 
-    //CRUD Courses
+    // CRUD Courses
 
     public function createCourse(){
         $new_course_data = request()->all();
@@ -74,7 +74,7 @@ class ConstructorController extends Controller
         return $course;
     }
 
-    //CRUD Lessons
+    // CRUD Lessons
 
     public function createLesson(){
         $request = request()->all();
@@ -101,7 +101,7 @@ class ConstructorController extends Controller
         $this->priorityRefactor($lessons);
     }
 
-    //CRUD Lesson items
+    // CRUD Lesson items
 
     public function createLessonItem(){
         $request = request()->all();
@@ -158,29 +158,25 @@ class ConstructorController extends Controller
         }
     }
 
-    //Quiz Constructor
+    // Quiz Constructor
 
     public function quizConstructor($quiz_id){
         $quiz = LessonItems::where('_id', $quiz_id)->first();
         return view('quiz-constructor', ['quiz'=>$quiz]);
     }
-    public function saveQuiz(){
 
-    }
-
-    //CRUD Questions
+    // CRUD Questions
 
     public function createQuestion(){
         $request = request()->all();
         $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
         $tempQuest = array(
-           "title" => $request['lessonTitle'],
+           "title" => $request['questTitle'],
            "answers" => []
         );
         $temp_questions = $current_quiz->questions;
         if(empty($temp_questions)){
             $temp_questions[0] = (object) $tempQuest;
-            $current_quiz->questions = $temp_questions;
         }
         else {
             $question_count = count($temp_questions);
@@ -191,27 +187,87 @@ class ConstructorController extends Controller
         return count($current_quiz->questions);
     }
     public function updateQuestion(){
-
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_id = $request['questionId'];
+        $current_questions = $current_quiz['questions'];
+        $current_questions[$quest_id]['title'] = $request['questTitle'];
+        $current_quiz->questions = $current_questions;
+        $current_quiz->save();
     }
     public function deleteQuestion(){
-
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_id = $request['questionId'];
+        $current_questions = $current_quiz['questions'];
+        unset($current_questions[$quest_id]);
+        $current_quiz->questions = array_values($current_questions);
+        $current_quiz->save();
     }
     public function getQuestion(){
-
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_title = $current_quiz->questions[$request['questionId']];
+        return $quest_title["title"];
     }
 
-    //CRUD Answers
-    public function createAnswer(){
+    // CRUD Answers
 
+    public function createAnswer(){
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_id = $request['questionId'];
+        $current_questions = $current_quiz['questions'];
+        $tempAnswer = array("title" => $request['answerTitle']);
+        if ($request['correctness'] == 'true'){
+            $tempAnswer["correctness"] = True;
+        } else {
+            $tempAnswer["correctness"] = False;
+        }
+        if(empty($current_questions[$quest_id]['answers'])){
+            $current_questions[$quest_id]['answers'][0] = (object)$tempAnswer;
+        } else {
+            $answers_count = count($current_questions[$quest_id]['answers']);
+            $current_questions[$quest_id]['answers'][$answers_count] = (object)$tempAnswer;
+        }
+        $current_quiz->questions = $current_questions;
+        $current_quiz->save();
+        return $current_questions;
     }
     public function updateAnswer(){
-
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_id = $request['questionId'];
+        $current_questions = $current_quiz['questions'];
+        $tempAnswer = array("title" => $request['answerTitle']);
+        if ($request['correctness'] == 'true'){
+            $tempAnswer["correctness"] = True;
+        } else {
+            $tempAnswer["correctness"] = False;
+        }
+        $answer_id = $request['answerId'];
+        $current_questions[$quest_id]['answers'][$answer_id] = (object)$tempAnswer;
+        $current_quiz->questions = $current_questions;
+        $current_quiz->save();
     }
     public function deleteAnswer(){
-
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_id = $request['questionId'];
+        $answer_id = $request['answerId'];
+        $current_questions = $current_quiz['questions'];
+        unset($current_questions[$quest_id]['answers'][$answer_id]);
+        $current_questions[$quest_id]['answers'] = array_values($current_questions[$quest_id]['answers']);
+        $current_quiz->questions = $current_questions;
+        $current_quiz->save();
     }
     public function getAnswer(){
-
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $quest_id = $request['questionId'];
+        $answer_id = $request['answerId'];
+        $target_answer =  $current_quiz->questions[$quest_id]['answers'][$answer_id];
+        return $target_answer;
     }
 }
 
