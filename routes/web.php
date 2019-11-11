@@ -2,6 +2,7 @@
 
 //Route::get('/', function () {return view('welcome');});
 
+
 Route::get('/', 'ConstructorController@index')->name('home');
 
 
@@ -29,9 +30,14 @@ Route::group(['prefix' => 'constructor'], function (){
     Route::post('/update-question', 'ConstructorController@updateQuestion');
     Route::post('/delete-question', 'ConstructorController@deleteQuestion');
     Route::post('/get-question',    'ConstructorController@getQuestion');
+    Route::post('get-question-count', 'ConstructorController@getQuestionCount');
 
     Route::post('/create-answer', 'ConstructorController@createAnswer');
     Route::post('/update-answer', 'ConstructorController@updateAnswer');
     Route::post('/delete-answer', 'ConstructorController@deleteAnswer');
     Route::post('/get-answer',    'ConstructorController@getAnswer');
+
+    Route::post('get-goal-condition', 'ConstructorController@getGoalCondition');
+    Route::post('delete-goal-condition', 'ConstructorController@deleteGoalCondition');
+    Route::post('edit-goal-condition', 'ConstructorController@editGoalCondition');
 });

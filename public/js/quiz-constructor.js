@@ -19,7 +19,7 @@ $(document).ready(function () {
             _token: $('meta[name=csrf-token]').attr("content")
         };
         $.ajax({
-            url:'http://localhost/laravel/public/constructor/get-lesson-item',
+            url: 'http://localhost/laravel/public/constructor/get-lesson-item',
             method: 'POST',
             data: dataObj,
             success: function (data) {
@@ -34,7 +34,7 @@ $(document).ready(function () {
         let quizTitle = $('#updateQuizInfo #quizTitleInput').val();
         let quizText = $('#updateQuizInfo #quizTextInput').val();
         if (quizTitle.length === 0
-            || quizText.length === 0){
+            || quizText.length === 0) {
             $('.form-creation-warning.checker').show();
         } else {
             $('.form-creation-warning.checker').hide();
@@ -54,7 +54,89 @@ $(document).ready(function () {
         }
     });
 
+    $(".update-quiz-goal-condition-button").click(function () {
+        let dataObj = {
+            quizId: quizID,
+            _token: $('meta[name=csrf-token]').attr("content")
+        };
+        $.ajax({
+            url: 'http://localhost/laravel/public/constructor/get-goal-condition',
+            method: 'POST',
+            data: dataObj,
+            success: function (data) {
+                if (data != null) {
+                    $('#editGoalCondition #conditionInput5').val(data.gc5);
+                    $('#editGoalCondition #conditionInput4').val(data.gc4);
+                    $('#editGoalCondition #conditionInput3').val(data.gc3);
+                }
+                $('#editGoalCondition').modal('toggle');
+            }
+        })
+    });
+
+    $(".update-quiz-goal-condition-submit").click(function () {
+        let gc5 = +$('#editGoalCondition #conditionInput5').val();
+        let gc4 = +$('#editGoalCondition #conditionInput4').val();
+        let gc3 = +$('#editGoalCondition #conditionInput3').val();
+        $.ajax({
+            url: 'http://localhost/laravel/public/constructor/get-question-count',
+            method: 'POST',
+            data: {
+                quizId: quizID,
+                _token: $('meta[name=csrf-token]').attr("content"),
+            },
+            success: function (quizQuestionCount) {
+                if (gc5 < gc4
+                    || gc4 < gc3
+                    || gc5 < gc3
+                    || gc5 > +quizQuestionCount
+                    || gc5 === 0
+                    || gc4 === 0
+                    || gc3 === 0
+                    || gc5 === gc4
+                    || gc5 === gc3
+                    || gc3 === gc4) {
+                    $('.form-creation-warning.checker').show();
+                } else {
+                    $('.form-creation-warning.checker').hide();
+                    let dataObj = {
+                        quizId: quizID,
+                        _token: $('meta[name=csrf-token]').attr("content"),
+                        cond5: gc5,
+                        cond4: gc4,
+                        cond3: gc3,
+                    };
+                    $.ajax({
+                        url: 'http://localhost/laravel/public/constructor/edit-goal-condition',
+                        method: 'POST',
+                        data: dataObj,
+                        success: function () {
+                            location.reload()
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $(".update-quiz-goal-condition-delete").click(function () {
+        $.ajax({
+            url: 'http://localhost/laravel/public/constructor/delete-goal-condition',
+            method: 'POST',
+            data: {
+                quizId: quizID,
+                _token: $('meta[name=csrf-token]').attr("content"),
+            },
+            success: function () {
+                location.reload()
+            }
+        });
+    });
+
+
     // Questions
+    {
+
 
     $(".question").click(function (){
         if($(this).hasClass('selected')){return}
@@ -154,8 +236,11 @@ $(document).ready(function () {
             success: location.reload()
         });
     });
-
+    }
     // Answers
+    {
+
+
 
     $(".add-answer-submit").click(function(){
         let title = $("#addAnswer input[name=answer-title]").val();
@@ -253,9 +338,9 @@ $(document).ready(function () {
     $(".delete-answer-button").click(function(){
         currentAnswerUpdating = ($(this).data("item"));
     });
-
+    }
     // Modal
-
+    {
     $('.form-creation-warning.checker').hide();
 
     $('.modal').on('hidden.bs.modal', function (e) {
@@ -272,5 +357,5 @@ $(document).ready(function () {
         $(".delete-question-button").show();
         $(".add-answer-button").show();
     }
-
+    }
 });

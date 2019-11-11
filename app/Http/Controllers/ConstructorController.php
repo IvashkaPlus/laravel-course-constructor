@@ -119,6 +119,7 @@ class ConstructorController extends Controller
             case "Тестирование":
                 $lessonItem->questions = [];
                 $lessonItem->course_id = (int)$request['courseId'];
+                $lessonItem->goal_condition = null;
                 $lessonItem->save();
                 return $lessonItem->_id;
         }
@@ -211,6 +212,12 @@ class ConstructorController extends Controller
         return $quest_title["title"];
     }
 
+    public function getQuestionCount(){
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        return count($current_quiz->questions);
+    }
+
     // CRUD Answers
 
     public function createAnswer(){
@@ -269,5 +276,31 @@ class ConstructorController extends Controller
         $target_answer =  $current_quiz->questions[$quest_id]['answers'][$answer_id];
         return $target_answer;
     }
+
+    public function editGoalCondition(){
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $goal_condition = array(
+            'gc5' => (int) $request['cond5'],
+            'gc4' => (int) $request['cond4'],
+            'gc3' => (int) $request['cond3'],
+        );
+        $current_quiz->goal_condition = (object) $goal_condition;
+        $current_quiz->save();
+    }
+
+    public function deleteGoalCondition(){
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        $current_quiz->goal_condition = null;
+        $current_quiz->save();
+    }
+
+    public function getGoalCondition(){
+        $request = request()->all();
+        $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
+        return $current_quiz->goal_condition;
+    }
+
 }
 

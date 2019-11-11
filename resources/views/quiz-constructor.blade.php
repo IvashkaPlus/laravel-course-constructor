@@ -29,7 +29,20 @@
                     <div class="col-xl-11 col-md-10 col-sm-9 col-xs-6" >
                         <div class="quiz-info-container" data-quiz="{{$quiz->_id}}" data-course="{{$quiz->course_id}}">
                             <div class="quiz-name" style="margin-top: 1.5em"><h1>{{$quiz->title}}</h1></div>
-                            <div class="quiz-description"><p>{{$quiz->html}}</p></div>
+                            <div class="quiz-description">
+                                <p>{{$quiz->html}}</p>
+                                <p>Критерий оценивания (количество правильных ответов):
+                                    @if($quiz->goal_condition == null)
+                                        Критерий не задан. Тестирование не оценивается
+                                    @else
+                                        <ul>
+                                            <li>На оценку 5: {{$quiz->goal_condition['gc5']}}</li>
+                                            <li>На оценку 4: {{$quiz->goal_condition['gc4']}}</li>
+                                            <li>На оценку 3: {{$quiz->goal_condition['gc3']}}</li>
+                                        </ul>
+                                    @endif
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xl-1 col-md-2 col-sm-3 col-xs-6">
@@ -40,6 +53,14 @@
                                          data-hint="true" title="Информация о тестировании">
                                         <div class="icon-place">
                                             <span class="glyphicon glyphicon-menu-hamburger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-xs-4" align="center">
+                                    <div class="update-quiz-goal-condition-button constructor-button"
+                                         data-hint="true" title="Критерии оценивания">
+                                        <div class="icon-place">
+                                            <span class="glyphicon glyphicon-flag"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -300,4 +321,38 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="editGoalCondition" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="edit-goal-condition-form">
+                <div class="modal-header">
+                    <h5 class="modal-title" align="center">Задайте критерии оценивания</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Введите количество правильных ответов на соотвтествующую оценку.
+                        Число не должно привышать количество вопросов.
+                        Если в тесте не требуется оценивание нажмите на кнопку удалить</p>
+                    <div class="form-group">
+                        <label for="conditionInput5">На оценку 5</label>
+                        <input class="form-control" name="5-cond" id="conditionInput5" placeholder="">
+                        <label for="conditionInput4">На оценку 4</label>
+                        <input class="form-control" name="4-cond" id="conditionInput4" placeholder="">
+                        <label for="conditionInput3">На оценку 3</label>
+                        <input class="form-control" name="3-cond" id="conditionInput3" placeholder="">
+                    </div>
+                    <small class="form-creation-warning checker">Некорректное заполнение!</small>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger update-quiz-goal-condition-delete"
+                        data-dismiss="modal">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary update-quiz-goal-condition-submit">Задать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
