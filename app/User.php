@@ -2,14 +2,16 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Jenssegers\Mongodb\Eloquent\HybridRelations;
+
 //use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HybridRelations;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'email', 'password',
     ];
 
     /**
@@ -38,5 +40,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //protected $connection = 'mysql';
+    protected $connection = 'mysql';
+
+    public function studentBooks()
+    {
+        return $this->hasMany('App/StudentBook', 'student_id');
+    }
 }

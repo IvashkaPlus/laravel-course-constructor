@@ -1,9 +1,10 @@
 <?php namespace App\Http\Controllers;
 
+use App\Course;
 use App\CourseLesson;
 use App\LessonItems;
-use App\Course;
-
+use App\StudentBook;
+use App\User;
 
 
 class ConstructorController extends Controller
@@ -34,17 +35,7 @@ class ConstructorController extends Controller
         $course->title = $new_course_data['name'];
         $course->description = $new_course_data['low_desc'];
         $course->full_description = $new_course_data['full_desc'];
-        $course->status = 0;
-        $course->author_id = 0;
-
-//        $image = request()->file('picture');
-//        if($image){
-//            $new_course = $course->save();
-//            Storage::putFileAs('public/course_avatars', $image, $new_course->id + '.jpg');
-//        }
-//        else {
-//            $course->save();
-//        }
+        $course->author = 0;
 
         $course->save();
         return redirect('/');
@@ -300,6 +291,38 @@ class ConstructorController extends Controller
         $request = request()->all();
         $current_quiz = LessonItems::where('_id', $request['quizId'])->first();
         return $current_quiz->goal_condition;
+    }
+
+    //Student List and Student Book
+
+    public function setCourseTo(){
+        $request = request()->all();
+        $student_array = $request['studentsArray'];
+        $added_students = [];
+        foreach($student_array as $student){
+            $student_book = new StudentBook();
+            $student_book->student_id = (int) $student;
+            $student_book->course_id = (int) $request['courseId'];
+            $student_book->status = 0;
+            $student_book->final_grade = 0;
+            $student_book->save();
+            $current_student = User::where('id', $student)->first();
+            array_push($added_students, $current_student);
+        }
+        return $added_students;
+    }
+
+    public function getCandidatesForCourse(){
+        $request = request()->all();
+        $users = User::where('second', 'like', $request['ln_query']."%")->take(5)->get();
+        return $users;
+    }
+
+    public function getStudentList($course_id){
+        $course = Course::where('id', $course_id)->first();
+        $student_list = StudentBook::where('course_id', (int) $course_id)->get();
+//        dd($student_list);
+        return view('course-student-list', ['course'=>$course, 'students'=>$student_list]);
     }
 
 }

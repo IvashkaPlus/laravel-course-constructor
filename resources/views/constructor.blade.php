@@ -108,7 +108,6 @@
     </div>
 
 </div>
-
 <div class="course-details container-fluid" style='margin-bottom: 1.5em'>
     <div class="row">
         <div class="col-md-4 col-xs-6">
@@ -233,7 +232,7 @@
 <div class="modal fade" id="addLesson" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="add-lesson-form">
+            <form id="add-lesson-form" action="/constructor/create-lesson">
                 {{ csrf_field() }}
                 <div class="modal-header">
                     <h5 class="modal-title" align="center">Введите название нового урока</h5>
@@ -245,16 +244,18 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary add-lesson-submit">Создать</button>
+                <button type="button" class="btn btn-primary add-lesson-submit" >Создать</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteLesson" tabindex="-1" role="dialog">
+<div class="modal fade" id="deleteLesson"  tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" align="center">Вы действительно хотите удалить этот урок?</h5>
+                <form id="delete-lesson-form" action="/constructor/delete-lesson">
+                    <h5 class="modal-title" align="center">Вы действительно хотите удалить этот урок?</h5>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>

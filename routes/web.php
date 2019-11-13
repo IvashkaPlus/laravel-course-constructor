@@ -10,6 +10,11 @@ Route::group(['prefix' => 'constructor'], function (){
 
     Route::get('/course/id{id}', 'ConstructorController@constructor')->name('constructor');
 
+    Route::get('student-list/course/id{id}', 'ConstructorController@getStudentList');
+
+    Route::post('/get-candidates', 'ConstructorController@getCandidatesForCourse');
+    Route::post('/set-course-to-student', 'ConstructorController@setCourseTo');
+
     Route::post('/create-course', 'ConstructorController@createCourse');
     Route::post('/update-course', 'ConstructorController@updateCourse');
     Route::post('/delete-course', 'ConstructorController@deleteCourse');
@@ -41,3 +46,6 @@ Route::group(['prefix' => 'constructor'], function (){
     Route::post('delete-goal-condition', 'ConstructorController@deleteGoalCondition');
     Route::post('edit-goal-condition', 'ConstructorController@editGoalCondition');
 });
+
+
+

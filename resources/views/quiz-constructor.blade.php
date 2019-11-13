@@ -21,7 +21,7 @@
 <div class="container-fluid" >
     <h1>Редактор тестирования</h1>
 </div>
-<div class="course-info container-fluid" style='margin-bottom: 1.5em'>
+<div class="quiz-info container-fluid" style='margin-bottom: 1.5em'>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12 ">
             <div class="constructor-section">
@@ -86,7 +86,7 @@
         <div class="col-xl-3 col-md-4 col-xs-6">
             <div class="question-container constructor-section">
                 @foreach($quiz->questions as $key=>$items)
-                    <div class="question" data-question="{{$key}}">{{$items['title']}}</div>
+                    <div class="quiz-question" data-question="{{$key}}">{{$items['title']}}</div>
                 @endforeach
                 <div class="add-question-button" data-toggle="modal" data-target="#addQuestion"><span>Добавить вопрос</span></div>
             </div>
@@ -321,8 +321,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="modal fade" id="editGoalCondition" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

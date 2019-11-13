@@ -30,17 +30,22 @@
                         <div class="row">
                             @foreach($courses as $course)
                                 <div class="col-4" align="center">
-                                    <a href="constructor/course/id{{$course->id}}">
-                                    <div class="course-button edit">
+                                    <div class="course-block edit" data-course="{{$course->id}}">
                                         <div class="course-avatar-container">
                                             <img src="" alt="">
                                         </div>
                                         <div class="course-info-container">
                                             <h5>{{$course->title}}</h5>
-                                            <p>{{$course->description}}</p>
+                                            <button type="button" class="btn btn-primary edit-course-button btn-block"
+                                                    data-course="{{$course->id}}">Редактировать курс</button>
+                                            <button type="button" data-toggle="modal" data-target="#setCourse"
+                                                    class="btn btn-primary course-setter-modal btn-block"
+                                                    data-course="{{$course->id}}" >Назначить курс</button>
+                                            <button type="button"
+                                                    class="btn btn-primary course-student-list btn-block"
+                                                    data-course="{{$course->id}}" >Список учеников</button>
                                         </div>
                                     </div>
-                                    </a>
                                 </div>
                             @endforeach
                             <div class="col-4" align="center">
@@ -57,42 +62,74 @@
     </div>
 
     <!--Add course modal window-->
-    <div class="modal bd-example-modal-lg fade" id="addCourse" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+
+</body>
+<div class="modal bd-example-modal-lg fade" id="addCourse" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" align="center">Новый курс</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{asset('constructor/create-course')}}" method="post" id="courseCreateForm" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label for="courseNameInput">Название курса</label>
+                        <input class="form-control" name="name" id="courseNameInput" placeholder="Название курса">
+                        <small class="form-course-creation-warning name">Введите название курса!</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseSmallDescriptionInput">Краткое описание курса</label>
+                        <textarea class="form-control" name="low_desc" id="courseSmallDescriptionInput" placeholder="Кратко опишите, о чем ваш курс"></textarea>
+                        <small class="form-symbol-counter"><span>0</span>/150</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseSmallDescriptionInput">Описание курса</label>
+                        <textarea rows="10" class="form-control" name="full_desc" id="courseFullDescriptionInput" placeholder="Опишите как можно подробннее ваш курс. Программа обучения, для кого этот курс, какие знания и навыки приобретёт ученик"></textarea>
+                        <small class = "form-hint">Описание не должно быть пустым</small>
+                    </div>
+
+                    <input type="file" name="picture" id="courseAvatarUpload" disabled>
+
+                    <small class="form-course-creation-warning checker">Пожалуйста, заполните все поля корректно!</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary submit-add-course">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="setCourse" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" align="center">Новый курс</h5>
-                </div>
-                <div class="modal-body">
-                    <form action="{{asset('constructor/create-course')}}" method="post" id="courseCreateForm" enctype="multipart/form-data">
-                        {{ csrf_field() }}
+                <form id="setCourseToStudentForm" action="{{asset('constructor/set-course-to-student')}}/">
+                    {{ csrf_field() }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" align="center">Назначение курса</h5>
+                    </div>
+                    <div class="modal-body">
                         <div class="form-group">
-                            <label for="courseNameInput">Название курса</label>
-                            <input class="form-control" name="name" id="courseNameInput" placeholder="Название курса">
-                            <small class="form-course-creation-warning name">Введите название курса!</small>
+                            <label for="studentSearcher">Фамилия студента</label>
+                            <input class="form-control" name="search-word" id="studentSearcher" placeholder="Поиск по фамилии студента">
                         </div>
+                        <p>Поиск</p>
                         <div class="form-group">
-                            <label for="courseSmallDescriptionInput">Краткое описание курса</label>
-                            <textarea class="form-control" name="low_desc" id="courseSmallDescriptionInput" placeholder="Кратко опишите, о чем ваш курс"></textarea>
-                            <small class="form-symbol-counter"><span>0</span>/150</small>
+                            <div id="candidateToCourse">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="courseSmallDescriptionInput">Описание курса</label>
-                            <textarea rows="10" class="form-control" name="full_desc" id="courseFullDescriptionInput" placeholder="Опишите как можно подробннее ваш курс. Программа обучения, для кого этот курс, какие знания и навыки приобретёт ученик"></textarea>
-                            <small class = "form-hint">Описание не должно быть пустым</small>
-                        </div>
-
-                            <input type="file" name="picture" id="courseAvatarUpload" disabled>
-
-                        <small class="form-course-creation-warning checker">Пожалуйста, заполните все поля корректно!</small>
-                    </form>
-                </div>
+                        <small class="form-creation-warning checker">Не выбран ни один пользователь!</small>
+                    </div>
+                </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary submit-add-course">Добавить</button>
+                    <button type="button" class="btn btn-primary set-course-submit">Назначить</button>
                 </div>
             </div>
         </div>
     </div>
-</body>
+
+
 

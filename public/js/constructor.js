@@ -11,7 +11,7 @@ $(document).ready(function () {
     //Listeners
 
     //Lessons
-
+    {
     $(".lesson").click(function (){
         if($(this).hasClass('selected')){return}
 
@@ -31,8 +31,10 @@ $(document).ready(function () {
 
     $(".add-lesson-submit").click(function(){
         let title = $("input[name=lesson-title]").val();
+        let link = $("#add-lesson-form").attr('action');
         if (title.length === 0) {
             $('.form-creation-warning.checker').show();
+            console.log(link);
         }
         else {
             $('.form-creation-warning.checker').hide();
@@ -51,13 +53,10 @@ $(document).ready(function () {
         }
     });
 
-    $(".update-lesson-submit").click(function(){
-
-    });
-
     $(".delete-lesson-submit").click(function(){
         let lesson = $(".lesson.selected").data('lesson');
         let token = $('meta[name=csrf-token]').attr("content");
+        let link = $("#delete-lesson-form").attr('action');
         let dataObj = {
             _token: token,
             courseId: courseID,
@@ -70,9 +69,9 @@ $(document).ready(function () {
             success: location.reload()
         });
     });
-
+    }
     //Lesson Items
-
+    {
     $(".modal-lesson-item-lecture").click(function(){
         $('#addLessonItem').modal('toggle');
         $('#addLecture').modal('toggle');
@@ -273,7 +272,6 @@ $(document).ready(function () {
         }
     });
 
-
     $(".delete-lesson-item-submit").click(function(){
         let token = $('meta[name=csrf-token]').attr("content");
         let lesson = $(".lesson.selected").data('lesson');
@@ -294,9 +292,9 @@ $(document).ready(function () {
     $(".delete-lesson-item-button").click(function(){
         tempItem = ($(this).data("item"));
     });
-
+    }
     //Course
-
+    {
     $(".update-course-button").click(function () {
         let dataObj = {
             courseId: courseID,
@@ -360,7 +358,7 @@ $(document).ready(function () {
         else
             $(".form-symbol-counter").removeClass('warning');
     });
-
+    }
     // Modal
 
     $('.modal').on('hidden.bs.modal', function (e) {
