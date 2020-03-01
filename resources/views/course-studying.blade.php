@@ -21,11 +21,13 @@
             <div class="col-lg-3 col-md-3">
                 <div class="row">
                     <div class="lesson-list">
-
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-lg-9 col-md-9"></div>
+            <div class="col-lg-9 col-md-9">
+
+            </div>
         </div>
     </div>
 
