@@ -48,4 +48,15 @@ Route::group(['prefix' => 'constructor'], function (){
 });
 
 
+Route::group(['prefix' => 'course'], function () {
+    Route::post('check-student', 'CleverCourseController@checkStudent');
+
+    Route::get('learning/id{id}', 'CleverCourseController@learnCourse');
+
+    Route::get('learning/access-denied', function () {return view('learning-access-denied');})
+        ->name('course-access-denied');
+});
+
+
+
 

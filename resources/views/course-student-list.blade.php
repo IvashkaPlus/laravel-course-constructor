@@ -46,7 +46,7 @@
                         @if($student->status == 0)
                             <span>Назначен</span>
                         @elseif($student->status == 1)
-                            <span>Назначен</span>
+                            <span>Начат</span>
                         @else
 
                             <span>Пройден</span>
@@ -64,3 +64,4 @@
         </div>
     </div>
 </body>
+</html>

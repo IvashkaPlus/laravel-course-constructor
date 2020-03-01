@@ -113,4 +113,28 @@ $(document).ready(function () {
         location.assign('http://localhost/laravel/public/constructor/student-list/course/id' + courseId);
     });
 
+    // Start course
+
+    $(".course-start").click(function () {
+        let courseId = $(this).data('course');
+        let studentId = 1;
+        let dataObj = {
+            _token: $('meta[name=csrf-token]').attr("content"),
+            courseId: courseId,
+            studentId: studentId,
+        };
+        $.ajax({
+            url: "http://localhost/laravel/public/course/check-student",
+            data: dataObj,
+            method: "POST",
+            success: function (data) {
+                if (data === '1'){
+                    location.assign('http://localhost/laravel/public/course/learning/id' + courseId);
+                } else {
+                    alert("Чтобы попасть на данный курс, обратитесь к преподавателю");
+                }
+            },
+        });
+    });
+
 });

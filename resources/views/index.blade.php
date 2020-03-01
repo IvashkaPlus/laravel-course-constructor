@@ -44,6 +44,9 @@
                                             <button type="button"
                                                     class="btn btn-primary course-student-list btn-block"
                                                     data-course="{{$course->id}}" >Список учеников</button>
+                                            <button type="button"
+                                                    class="btn btn-primary course-start btn-block"
+                                                    data-course="{{$course->id}}" >Начать курс</button>
                                         </div>
                                     </div>
                                 </div>
