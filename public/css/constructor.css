@@ -20,7 +20,7 @@ p,h1,h2{color: #595a5b}
 }
 
 .lesson,
-.question,
+.quiz-question,
 .answer,
 .lesson-item,
 .add-lesson-button,
@@ -29,7 +29,7 @@ p,h1,h2{color: #595a5b}
 .add-answer-button{border-bottom: #95999c 1px solid}
 
 .lesson,
-.question,
+.quiz-question,
 .answer,
 .add-lesson-button,
 .add-lesson-item-button,
@@ -58,14 +58,14 @@ p,h1,h2{color: #595a5b}
 .add-question-button:hover,
 .add-answer-button:hover,
 .lesson:hover,
-.question:hover{
+.quiz-question:hover{
     cursor: pointer;
     background-color: #ceece7
 }
 
 .lesson-item{height: 10em}
 
-.question.selected,
+.quiz-question.selected,
 .lesson.selected{background-color: #9fe7da;}
 
 .question-info-container{

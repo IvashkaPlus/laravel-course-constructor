@@ -83,5 +83,14 @@ class CleverCourseController extends Controller
             }
         }
     }
+
+    public function getMaterial(){
+        $request = request()->all();
+        $material =  LessonItems::where('_id', $request['materialId'])->first();
+        if ($material->type == 'Видео'){
+            
+        }
+        return $material;
+    }
 }
 

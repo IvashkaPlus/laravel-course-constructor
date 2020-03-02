@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     let modal = $(".modal");
-    let questions = $('.question');
+    let questions = $('.quiz-question');
     let quizID = $(".quiz-info-container").data('quiz');
     let courseID = $(".quiz-info-container").data('course');
     let currentAnswerUpdating = '';
@@ -138,7 +138,7 @@ $(document).ready(function () {
     {
 
 
-    $(".question").click(function (){
+    $(".quiz-question").click(function (){
         if($(this).hasClass('selected')){return}
 
         let quest_id = $(this).data('question');
@@ -146,7 +146,7 @@ $(document).ready(function () {
 
         $('.question-block').hide();
 
-        $('.question').removeClass('selected');
+        $('.quiz-question').removeClass('selected');
         $(this).addClass('selected');
 
         for(let i = 0; i < question_blocks.length; i++){
@@ -182,7 +182,7 @@ $(document).ready(function () {
         let token = $('meta[name=csrf-token]').attr("content");
         let dataObj = {
             _token: token,
-            questionId: $('.question.selected').data('question'),
+            questionId: $('.quiz-question.selected').data('question'),
             quizId: quizID,
         };
         $.ajax({
@@ -198,7 +198,7 @@ $(document).ready(function () {
 
     $(".update-question-submit").click(function(){
         let title = $("#updateQuestion input[name=question-title]").val();
-        let quest_id = $('.question.selected').data('question');
+        let quest_id = $('.quiz-question.selected').data('question');
         if (title.length === 0) {
             $('.form-creation-warning.checker').show();
         }
@@ -221,7 +221,7 @@ $(document).ready(function () {
     });
 
     $(".delete-question-submit").click(function(){
-        let question = $(".question.selected").data('question');
+        let question = $(".quiz-question.selected").data('question');
         let token = $('meta[name=csrf-token]').attr("content");
         let dataObj = {
             _token: token,
@@ -244,7 +244,7 @@ $(document).ready(function () {
 
     $(".add-answer-submit").click(function(){
         let title = $("#addAnswer input[name=answer-title]").val();
-        let quest_id = $('.question.selected').data('question');
+        let quest_id = $('.quiz-question.selected').data('question');
         let correctnessInfo = $('#addAnswer #answerCorrectnessCheck').prop('checked');
         if (title.length === 0) {
             $('.form-creation-warning.checker').show();
@@ -272,7 +272,7 @@ $(document).ready(function () {
         let token = $('meta[name=csrf-token]').attr("content");
         let dataObj = {
             _token: token,
-            questionId: $('.question.selected').data('question'),
+            questionId: $('.quiz-question.selected').data('question'),
             quizId: quizID,
             answerId: $(this).data("item")
         };
@@ -291,7 +291,7 @@ $(document).ready(function () {
 
     $(".update-answer-submit").click(function(){
         let title = $("#updateAnswer input[name=answer-title]").val();
-        let quest_id = $('.question.selected').data('question');
+        let quest_id = $('.quiz-question.selected').data('question');
         let correctnessInfo = $('#updateAnswer #answerCorrectnessCheck').prop('checked');
         if (title.length === 0) {
             $('.form-creation-warning.checker').show();
@@ -318,7 +318,7 @@ $(document).ready(function () {
     });
 
     $(".delete-answer-submit").click(function(){
-        let question = $(".question.selected").data('question');
+        let question = $(".quiz-question.selected").data('question');
         let token = $('meta[name=csrf-token]').attr("content");
         let dataObj = {
             _token: token,
