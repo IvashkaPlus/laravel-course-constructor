@@ -1,1 +1,1 @@
-<h1>My course constructor for Clever-e.com</h1>
+<h1>My course constructor</h1>
